@@ -489,7 +489,11 @@ EGLSurface eglCreateWindowSurface(  EGLDisplay dpy, EGLConfig config,
         cnx->egl.eglGetConfigAttrib(iDpy, config, EGL_ALPHA_SIZE, &a);
         if (a > 0) {
             // alpha-channel requested, there's really only one suitable format
+#ifdef BROADCOM_AOSP
+            format = HAL_PIXEL_FORMAT_BGRA_8888;
+#else
             format = HAL_PIXEL_FORMAT_RGBA_8888;
+#endif
         } else {
             EGLint r, g, b;
             r = g = b = 0;
@@ -1859,7 +1863,11 @@ EGLClientBuffer eglCreateNativeClientBufferANDROID(const EGLint *attrib_list)
     // Validate format.
     if (red_size == 8 && green_size == 8 && blue_size == 8) {
         if (alpha_size == 8) {
+#ifdef BROADCOM_AOSP
+            format = HAL_PIXEL_FORMAT_BGRA_8888;
+#else
             format = HAL_PIXEL_FORMAT_RGBA_8888;
+#endif
         } else {
             format = HAL_PIXEL_FORMAT_RGB_888;
         }
